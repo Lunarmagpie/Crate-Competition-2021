@@ -6,12 +6,12 @@
 package frc.robot;
 //IMPORTS
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.Drive;
-import frc.robot.commands.DriveForward;
-import frc.robot.commands.Feed;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -23,20 +23,26 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer 
 {  
+  //Subsystems
+  private final Drivetrain drivetrain = new Drivetrain();
+  private final Intake intake = new Intake(); 
 
-  //subsystems
-  private final Drivetrain drivetrain = new Drivetrain(); 
-
-  //commands
-  private final Drive drive = new Drive();
-  private final Feed feed = new Feed();
-  private final DriveForward driveForward = new DriveForward();
+  //Commands
+  private final Joystick left = new Joystick(0);
+  private final Joystick right = new Joystick(1);
+  private JoystickButton feed;
+  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() 
   {
     // Configure the button bindings
     configureButtonBindings();
+    drivetrain.setDefaultCommand(
+      new RunCommand(
+        //make sure it's inverted dumbass
+        ()-> drivetrain.tankDrive(left.getRawAxis(1), right.getRawAxis(1)), drivetrain)
+    ); 
   }
 
   /**
@@ -44,13 +50,14 @@ public class RobotContainer
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * 
    */
   
   private void configureButtonBindings() 
   {
-    //Example button
-    intake = new JoystickButton(right, 0);
-    intake.whileHeld(new StartEndCommand(() -> intake.feed(1), ()-> intake.feed(0), intake));
+    //Buttons
+    feed = new JoystickButton(right, 1);
+    feed.whileHeld(new StartEndCommand(() -> intake.feed(1), ()-> intake.feed(0), intake));
   }
 
   /**
@@ -61,6 +68,6 @@ public class RobotContainer
   public Command getAutonomousCommand() 
   {
     // An ExampleCommand will run in autonomous
-    return driveForward;
+    return null;
   }
 }

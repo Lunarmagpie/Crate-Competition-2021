@@ -15,13 +15,13 @@ package frc.robot;
 public final class Constants 
 {
     //Drivetrain 
-    public static final int FRONTR = 0;
-    public static final int FRONTl = 0;
+    public static final int FRONTR = 1;
+    public static final int FRONTl = 2;
     public static final int BACKR = 0;
-    public static final int BACKL = 0;
+    public static final int BACKL = 3;
 
     //Intake
-    public static final int INTAKEMOTOR = 0;
-    public static final int INTAKE_BTN = 0;
+    //public static final int INTAKE_MOTOR = 0;
+    public static final int FEED = 0;
 
 }
